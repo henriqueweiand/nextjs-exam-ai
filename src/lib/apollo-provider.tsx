@@ -8,7 +8,7 @@ export function ApolloWrapper({ children }: { children: ReactNode }) {
   const client = new ApolloClient({
     cache: new InMemoryCache(),
     link: createUploadLink({
-      uri: process.env.GRAPHQL_URL || 'http://localhost:3000/graphql',
+      uri: process.env.NEXT_PUBLIC_GRAPHQL_URL || 'http://localhost:3000/graphql',
       headers: {
         'apollo-require-preflight': 'true',
       }
