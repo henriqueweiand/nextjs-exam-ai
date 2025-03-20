@@ -62,6 +62,7 @@ export default function Home() {
       form.reset();
       
       toast.success('Exam uploaded successfully');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error('Upload failed', {
         description: error.message || 'An unexpected error occurred'

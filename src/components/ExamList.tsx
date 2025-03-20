@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { gql, useQuery } from '@apollo/client';
@@ -119,7 +120,7 @@ export function ExamList({ selectedExamId }: ExamListProps) {
             </Accordion>
             <Separator className="my-4" />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {selectedExam.records.map((record) => (
+              {selectedExam.records.map((record: any) => (
                 <Card key={record.id} className="bg-secondary/20">
                   <CardContent className="pt-4">
                     <h4 className="font-semibold mb-2">{record.name}</h4>
