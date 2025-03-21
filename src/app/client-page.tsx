@@ -74,11 +74,8 @@ export default function ClientPage() {
   };
 
   return (
-    <div className="container mx-auto p-4 pt-0 max-w-7xl">
+    <div className="container mx-auto p-4 max-w-7xl">
       <Card className="mb-4">
-        <CardHeader>
-          <CardTitle>Upload New Exam</CardTitle>
-        </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center gap-4">
             <div className="w-full">
@@ -94,6 +91,7 @@ export default function ClientPage() {
               type="submit" 
               disabled={!selectedFile || isUploading}
               variant="default"
+              size={"sm"}
               className="w-full sm:w-auto"
             >
               {isUploading ? (
