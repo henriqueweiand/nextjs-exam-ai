@@ -12,10 +12,13 @@ const GET_EXAM_BY_ID = gql`
     getById(id: $id) {
       id
       collectedDate
+      recommendations
+      summary
       records {
         group
         name
         normalRange
+        normalRangeType
         unit
         value
         id
@@ -30,6 +33,7 @@ interface ExamRecord {
   group: string;
   name: string;
   normalRange: string;
+  normalRangeType: 'above_range' | 'below_range' | 'within_range';
   unit: string;
   value: string;
   createdDate: string;
@@ -83,33 +87,53 @@ export function ExamList({ selectedExamId }: { selectedExamId: string | null }) 
         <Card>
           <CardHeader>
             <CardTitle>
-              Exam Results - {exam.collectedDate}
+              Exam: {exam.collectedDate}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-4">
-              {exam.records.map((record: ExamRecord) => (
-                <Card key={record.id}>
-                  <CardContent className="">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <div>
-                        <p className="text-lg font-semibold">{record.name}</p>
-                        <p className="text-xs text-muted-foreground">{record.group}</p>
+            <div className="space-y-6">
+              {exam.recommendations && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">Recommendations</h3>
+                  <p className="text-sm text-muted-foreground">{exam.recommendations}</p>
+                </div>
+              )}
+              
+              {exam.summary && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">Summary</h3>
+                  <p className="text-sm text-muted-foreground">{exam.summary}</p>
+                </div>
+              )}
+
+              <div className="grid gap-4">
+                {exam.records.map((record: ExamRecord) => (
+                  <Card key={record.id}>
+                    <CardContent className="">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div>
+                          <p className="text-lg font-semibold">{record.name}</p>
+                          <p className="text-xs text-muted-foreground">{record.group}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">Result</p>
+                          <p className={`text-lg font-semibold ${
+                            record.normalRangeType === 'within_range' 
+                              ? 'text-green-600' 
+                              : 'text-red-600'
+                          }`}>
+                            {record.value} {record.unit}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">Reference Range</p>
+                          <p className="text-lg">{record.normalRange}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-muted-foreground">Result</p>
-                        <p className="text-lg font-semibold">
-                          {record.value} {record.unit}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-muted-foreground">Reference Range</p>
-                        <p className="text-lg">{record.normalRange}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>
