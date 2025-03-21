@@ -74,7 +74,7 @@ export default function ClientPage() {
   };
 
   return (
-    <div className="container mx-auto p-4 max-w-7xl">
+    <div className="container mx-auto p-4 pt-0 max-w-7xl">
       <Card className="mb-4">
         <CardHeader>
           <CardTitle>Upload New Exam</CardTitle>
