@@ -1,12 +1,12 @@
 'use client';
 
-import { gql, useMutation, useQuery } from '@apollo/client';
-import { useState } from 'react';
 import { ExamList } from '@/components/ExamList';
 import { ExamSidebar } from '@/components/ExamSidebar';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { Loader2, Menu } from "lucide-react";
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 const UPLOAD_EXAM = gql`
