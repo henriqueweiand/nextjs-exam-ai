@@ -12,7 +12,7 @@ interface ExamSidebarProps {
 export function ExamSidebar({ exams, selectedExamId, onSelectExam }: ExamSidebarProps) {
   return (
     <div className="w-64 border-r h-full p-4 space-y-2">
-      <h3 className="font-semibold mb-4">Exam History</h3>
+      <h3 className="font-semibold mb-4 pt-10">Exam History</h3>
       {exams.map((exam) => (
         <button
           key={exam.id}

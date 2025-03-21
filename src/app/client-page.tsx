@@ -6,7 +6,7 @@ import { ExamList } from '@/components/ExamList';
 import { ExamSidebar } from '@/components/ExamSidebar';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
+import { Loader2, Menu } from "lucide-react";
 import { toast } from 'sonner';
 
 const UPLOAD_EXAM = gql`
@@ -32,6 +32,7 @@ export default function ClientPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadExam] = useMutation(UPLOAD_EXAM);
   const { data, refetch } = useQuery(GET_ALL_EXAMS);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -79,18 +80,21 @@ export default function ClientPage() {
           <CardTitle>Upload New Exam</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="flex items-center gap-4">
-            <input
-              type="file"
-              onChange={handleFileChange}
-              accept=".pdf"
-              className="flex-1"
-              disabled={isUploading}
-            />
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="w-full">
+              <input
+                type="file"
+                onChange={handleFileChange}
+                accept=".pdf"
+                className="w-full"
+                disabled={isUploading}
+              />
+            </div>
             <Button 
               type="submit" 
               disabled={!selectedFile || isUploading}
               variant="default"
+              className="w-full sm:w-auto"
             >
               {isUploading ? (
                 <>
@@ -104,12 +108,38 @@ export default function ClientPage() {
           </form>
         </CardContent>
       </Card>
-      <div className="flex border rounded-lg">
-        <ExamSidebar 
-          exams={data?.getAll || []}
-          selectedExamId={selectedExamId}
-          onSelectExam={setSelectedExamId}
-        />
+      <div className="relative flex border rounded-lg">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute top-2 left-2 lg:hidden z-50"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        >
+          <Menu className="h-4 w-4" />
+        </Button>
+        
+        <div className={`
+          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
+          transition-transform duration-200 ease-in-out
+          absolute lg:relative 
+          lg:translate-x-0
+          bg-background
+          z-40
+          h-[calc(100vh-12rem)]
+          lg:h-auto
+        `}>
+          <ExamSidebar 
+            exams={data?.getAll || []}
+            selectedExamId={selectedExamId}
+            onSelectExam={(id) => {
+              setSelectedExamId(id);
+              if (window.innerWidth < 1024) {
+                setIsSidebarOpen(false);
+              }
+            }}
+          />
+        </div>
+        
         <div className="flex-1">
           <ExamList selectedExamId={selectedExamId} />
         </div>
